@@ -8,9 +8,14 @@ import cookieParser from "cookie-parser";
 const app = express();
 const port = 3001;
 
+const allowedOrigins = [
+  "http://localhost:3000",           // para testar local
+  "https://mynetblog.netlify.app"   // produção (Netlify)
+];
+
 app.use(
   cors({
-    origin: "https://mynetblog.netlify.app/", // sua url do front
+    origin: allowedOrigins, // sua url do front
     credentials: true, // habilita cookies
   })
 );
