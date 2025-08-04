@@ -10,7 +10,7 @@ const port = 3001;
 
 app.use(
   cors({
-    origin: "http://localhost:3000", // sua url do front
+    origin: "https://mynetblog.netlify.app/", // sua url do front
     credentials: true, // habilita cookies
   })
 );
