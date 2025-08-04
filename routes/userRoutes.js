@@ -15,7 +15,7 @@ router.get("/blog/:userId", authenticateToken, profileUser);
 router.post("/logout", logoutUser);
 router.get("/profile", authenticateToken, (req, res) => {
   res.json({
-    userId: req.user.id,
+    userId: req.user.userId,
     fullname: req.user.fullname,
     email: req.user.email,
   });
