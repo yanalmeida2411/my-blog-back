@@ -39,7 +39,7 @@ export const loginUser = async (req, res) => {
     .cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // só envia em HTTPS no prod
-      sameSite: "lax",
+      sameSite: "none",
       maxAge: 60 * 60 * 1000, // 1 hora em ms
     })
     .json({ userId: user.userId, fullname: user.fullname }); // retorna dados úteis para front
