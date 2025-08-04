@@ -3,9 +3,10 @@ import { pool } from "../database/userDB.js";
 
 export async function insertUser({ fullname, user, email, password }) {
   // Verifica se já existe o email no banco
-  const [existing] = await pool.query("SELECT * FROM blogshop_db.user_register WHERE email = ?", [
-    email,
-  ]);
+  const { rows: existing } = await pool.query(
+    "SELECT * FROM user_register WHERE email = $1",
+    [email]
+  );
 
   if (existing.length > 0) {
     throw new Error("Email já cadastrado");
@@ -14,22 +15,19 @@ export async function insertUser({ fullname, user, email, password }) {
   // Criptografa a senha
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const [result] = await pool.query(
-    "INSERT INTO blogshop_db.user_register (fullname, user, email, password) VALUES (?, ?, ?, ?)",
+  const { rows } = await pool.query(
+    "INSERT INTO user_register (fullname, \"user\", email, password) VALUES ($1, $2, $3, $4) RETURNING *",
     [fullname, user, email, hashedPassword]
   );
 
-  return {
-    fullname,
-    user,
-    email,
-  };
+  return rows[0];
 }
 
 export async function findUserByEmailAndPassword(email, password) {
-  const [results] = await pool.query("SELECT * FROM blogshop_db.user_register WHERE email = ?", [
-    email,
-  ]);
+  const { rows: results } = await pool.query(
+    "SELECT * FROM user_register WHERE email = $1",
+    [email]
+  );
 
   const user = results[0];
   if (!user) return null;
@@ -42,8 +40,9 @@ export async function findUserByEmailAndPassword(email, password) {
 }
 
 export async function findUserById(id) {
-  const [results] = await pool.query("SELECT * FROM blogshop_db.user_register WHERE userId = ?", [
-    id,
-  ]);
+  const { rows: results } = await pool.query(
+    "SELECT * FROM user_register WHERE userId = $1",
+    [id]
+  );
   return results[0];
 }
