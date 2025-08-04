@@ -57,7 +57,7 @@ export const profileUser = async (req, res) => {
   // Aqui você pode retornar os dados do usuário logado
   res.json({
     message: "Usuário autenticado com sucesso",
-    userId: tokenUserId,
+    userId: userId,
     fullname: req.user.fullname,
     email: req.user.email,
   });
