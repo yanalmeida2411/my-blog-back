@@ -31,7 +31,7 @@ export async function deleteFollow(follower_id, following_id) {
 export async function getFollowing(userId) {
   const { rows } = await pool.query(
     `
-    SELECT u.userId, u.fullname, u.user 
+    SELECT u."userId", u.fullname, u.user 
     FROM follow_status f
     JOIN user_register u ON f.following_id = u."userId"
     WHERE f.follower_id = $1
@@ -44,7 +44,7 @@ export async function getFollowing(userId) {
 export async function getFollowers(userId) {
   const { rows } = await pool.query(
     `
-    SELECT u.userId, u.fullname, u.user 
+    SELECT u."userId", u.fullname, u.user 
     FROM follow_status f
     JOIN user_register u ON f.follower_id = u."userId"
     WHERE f.following_id = $1
