@@ -33,7 +33,7 @@ export async function getFollowing(userId) {
     `
     SELECT u.userId, u.fullname, u.user 
     FROM follow_status f
-    JOIN user_register u ON f.following_id = u.userId
+    JOIN user_register u ON f.following_id = u."userId"
     WHERE f.follower_id = $1
   `,
     [userId]
@@ -46,7 +46,7 @@ export async function getFollowers(userId) {
     `
     SELECT u.userId, u.fullname, u.user 
     FROM follow_status f
-    JOIN user_register u ON f.follower_id = u.userId
+    JOIN user_register u ON f.follower_id = u."userId"
     WHERE f.following_id = $1
   `,
     [userId]
