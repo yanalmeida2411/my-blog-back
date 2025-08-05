@@ -16,10 +16,9 @@ export const fetchPost = async (req, res) => {
   if (!post) return res.status(404).send("Post não encontrado");
   res.json(post);
 };
-
 export const getPostsByAuthor = async (req, res) => {
   // Pega o id do token, não da URL:
-  const authorId = req.user.id;
+  const authorId = req.user.userId;
 
   try {
     const posts = await getPostsByAuthorId(authorId);
@@ -32,7 +31,7 @@ export const getPostsByAuthor = async (req, res) => {
 
 export const createPost = async (req, res) => {
   const { post_title, post_resume, post_content } = req.body;
-  const authorId = req.user.id; // pegando do token
+  const authorId = req.user.userId; // pegando do token
   const post_authorName = req.user.fullname
 
   const post = await createNewPost(post_title, post_resume, post_content, authorId,post_authorName);
@@ -42,5 +41,5 @@ export const createPost = async (req, res) => {
 export const deletePost = async (req, res) => {
   const success = await deletePostById(req.params.id);
   if (!success) return res.status(404).send("Post não encontrado");
-  res.status(204).send(); // sem conteúdo
+  res.status(204).send();
 };
