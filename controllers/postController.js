@@ -18,7 +18,7 @@ export const fetchPost = async (req, res) => {
 };
 export const getPostsByAuthor = async (req, res) => {
   // Pega o id do token, não da URL:
-  const authorId = req.user.userId;
+  const { authorId } = req.user;
 
   try {
     const posts = await getPostsByAuthorId(authorId);
@@ -32,9 +32,15 @@ export const getPostsByAuthor = async (req, res) => {
 export const createPost = async (req, res) => {
   const { post_title, post_resume, post_content } = req.body;
   const authorId = req.user.userId; // pegando do token
-  const post_authorName = req.user.fullname
+  const post_authorName = req.user.fullname;
 
-  const post = await createNewPost(post_title, post_resume, post_content, authorId,post_authorName);
+  const post = await createNewPost(
+    post_title,
+    post_resume,
+    post_content,
+    authorId,
+    post_authorName
+  );
   res.status(201).json(post);
 };
 

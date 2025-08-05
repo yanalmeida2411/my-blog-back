@@ -11,8 +11,8 @@ import { authenticateToken } from "../middlewares/auth.js";
 const router = express.Router();
 
 router.get("/", fetchAllPosts);
-router.get("/:id", fetchPost);
 router.get("/author/:authorId", authenticateToken, getPostsByAuthor);
+router.get("/:id", fetchPost);
 router.post("/", authenticateToken, createPost);
 router.delete("/:id", authenticateToken, deletePost);
 
