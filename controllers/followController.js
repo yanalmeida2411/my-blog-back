@@ -6,7 +6,7 @@ import {
 } from "../services/followService.js";
 
 export const followUser = async (req, res) => {
-  const follower_id = req.user.id;
+  const follower_id = req.user.userId;
   const { following_id } = req.body;
 
   try {
@@ -18,7 +18,7 @@ export const followUser = async (req, res) => {
 };
 
 export const unfollowUser = async (req, res) => {
-  const follower_id = req.user.id;
+  const follower_id = req.user.userId;
   const { following_id } = req.body;
 
   try {
