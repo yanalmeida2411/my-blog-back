@@ -17,7 +17,7 @@ export async function findAllPosts() {
   const { rows } = await pool.query(`
     SELECT p.*, u.fullname AS author_name
     FROM posts p
-    JOIN user_register u ON p.post_authorId = u.userId
+    JOIN user_register u ON p."post_authorId" = u."userId"
     ORDER BY p.post_date DESC
   `);
   return rows;
@@ -28,7 +28,7 @@ export async function findPostById(postId) {
     `
     SELECT p.*, u.fullname AS author_name
     FROM posts p
-    JOIN user_register u ON p.post_authorId = u.userId
+    JOIN user_register u ON p."post_authorId" = u."userId"
     WHERE p.post_id = $1
   `,
     [postId]
@@ -39,7 +39,7 @@ export async function findPostById(postId) {
 export async function insertPost(post_title, post_resume, post_content, post_authorId, post_authorName) {
   const { rows } = await pool.query(
     `
-    INSERT INTO posts (post_title, post_resume, post_content, post_authorId, post_authorName)
+    INSERT INTO posts (post_title, post_resume, post_content, "post_authorId", "post_authorName")
     VALUES ($1, $2, $3, $4, $5)
     RETURNING *
   `,
@@ -60,8 +60,8 @@ export async function getPostsByAuthorId(authorId) {
   const { rows } = await pool.query(
     `SELECT p.*, u.fullname AS author_name
      FROM posts p
-     JOIN user_register u ON p.post_authorId = u.userId
-     WHERE p.post_authorId = $1
+     JOIN user_register u ON p."post_authorId" = u."userId"
+     WHERE p."post_authorId" = $1
      ORDER BY p.post_date DESC`,
     [authorId]
   );
