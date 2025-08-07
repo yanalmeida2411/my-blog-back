@@ -34,15 +34,16 @@ export const loginUser = async (req, res) => {
     { expiresIn: "1h" }
   );
 
-  // Envia o token como cookie HTTP-only
+  // Seta cookie de forma compatível com mobile
   res
     .cookie("token", token, {
       httpOnly: true,
-      secure: true, 
+      secure: true,
       sameSite: "none",
-      maxAge: 60 * 60 * 1000, // 1 hora em ms
+      path: "/", // cookie enviado em todas as rotas
+      maxAge: 24 * 60 * 60 * 1000, // 1 dia
     })
-    .json({ userId: user.userId, fullname: user.fullname }); // retorna dados úteis para front
+    .json({ userId: user.userId, fullname: user.fullname });
 };
 
 export const profileUser = async (req, res) => {
