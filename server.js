@@ -10,29 +10,28 @@ const port = 3001;
 
 // Domínios permitidos
 const allowedOrigins = [
-  "http://localhost:3000",           // desenvolvimento local
-  "https://mynetblog.netlify.app"    // produção no Netlify
+  "http://localhost:3000", // desenvolvimento local
+  "https://mynetblog.netlify.app" // produção no Netlify
 ];
 
-// CORS configurado para aceitar cookies e mobile
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // permite chamadas sem Origin (mobile/Safari)
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-      return callback(new Error("Not allowed by CORS"));
-    },
-    credentials: true
-  })
-);
+// Configuração CORS para permitir cookies
+app.use(cors({
+  origin: function (origin, callback) {
+    // Permite requisições sem origin (mobile/Safari) e com origins autorizadas
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true
+}));
 
-// Garantir que o navegador aceite cookies no cross-domain
+// Middleware extra para garantir headers no mobile
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.header("Access-Control-Allow-Origin", origin);
+  if (!origin || allowedOrigins.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", origin || "*");
+    res.header("Vary", "Origin");
   }
   res.header("Access-Control-Allow-Credentials", "true");
   next();
@@ -47,7 +46,7 @@ app.use("/follows", followRoutes);
 app.use("/", userRoutes);
 app.use("/posts", postRoutes);
 
-// Iniciar servidor
+// Inicia o servidor
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
 });
